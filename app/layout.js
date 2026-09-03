@@ -99,6 +99,12 @@ export default function RootLayout({ children }) {
           }}
         />
         <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'try{if("scrollRestoration"in history)history.scrollRestoration="manual";window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;}catch(e){}',
+          }}
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />

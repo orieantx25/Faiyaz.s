@@ -188,7 +188,7 @@ export function DeliveryTrendChart() {
     datasets: [
       {
         label: 'Dashboards shipped',
-        data: inView ? [10, 14, 18] : [0, 0, 0],
+        data: inView ? [10, 14, 32] : [0, 0, 0],
         borderColor: 'rgba(88, 118, 105, 0.95)',
         backgroundColor: 'rgba(88, 118, 105, 0.12)',
         fill: true,
@@ -200,7 +200,7 @@ export function DeliveryTrendChart() {
       },
       {
         label: 'Reports / hubs',
-        data: inView ? [5, 8, 11] : [0, 0, 0],
+        data: inView ? [5, 8, 22] : [0, 0, 0],
         borderColor: 'rgba(160, 120, 95, 0.95)',
         backgroundColor: 'rgba(160, 120, 95, 0.1)',
         fill: true,

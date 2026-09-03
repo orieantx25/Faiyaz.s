@@ -50,7 +50,8 @@ export default function Contact() {
             <motion.a
               whileHover={{ y: -2 }}
               href={profile.resume}
-              download
+              download="Faiyaz_Sabab_Resume.pdf"
+              type="application/pdf"
               className="col-span-2 flex items-center justify-center gap-3 px-6 rounded-2xl border border-border bg-cream text-ink font-medium hover:border-sage/40 transition-colors"
             >
               <FileText className="w-5 h-5 text-sage" />

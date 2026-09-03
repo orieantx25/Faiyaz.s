@@ -27,6 +27,15 @@ def styles():
             alignment=TA_LEFT,
             spaceAfter=2,
         ),
+        "location": ParagraphStyle(
+            "Location",
+            parent=base["Normal"],
+            fontName="Times-Roman",
+            fontSize=10.5,
+            leading=13,
+            textColor=MUTED,
+            spaceAfter=4,
+        ),
         "contact": ParagraphStyle(
             "Contact",
             parent=base["Normal"],
@@ -34,6 +43,15 @@ def styles():
             fontSize=9.5,
             leading=13,
             textColor=MUTED,
+            spaceAfter=10,
+        ),
+        "link": ParagraphStyle(
+            "Link",
+            parent=base["Normal"],
+            fontName="Times-Roman",
+            fontSize=9.5,
+            leading=13,
+            textColor=HexColor("#1a5f8a"),
             spaceAfter=10,
         ),
         "section": ParagraphStyle(
@@ -121,12 +139,17 @@ def build():
     story = []
 
     story.append(Paragraph("Faiyaz Sabab", s["name"]))
-    story.append(Paragraph("Data Analyst", s["meta"]))
+    story.append(Paragraph("Bengaluru, India", s["location"]))
     story.append(
         Paragraph(
-            "Bengaluru, India &nbsp;|&nbsp; sababfaiyaz25@gmail.com &nbsp;|&nbsp; "
-            "linkedin.com/in/faiyaz-sabab-0925-cse &nbsp;|&nbsp; github.com/orieantx25",
-            s["contact"],
+            '<link href="mailto:sababfaiyaz25@gmail.com">sababfaiyaz25@gmail.com</link>'
+            " &nbsp;|&nbsp; "
+            '<link href="https://www.linkedin.com/in/faiyaz-sabab-0925-cse">linkedin.com/in/faiyaz-sabab-0925-cse</link>'
+            " &nbsp;|&nbsp; "
+            '<link href="https://github.com/orieantx25">github.com/orieantx25</link>'
+            " &nbsp;|&nbsp; "
+            '<link href="https://faiyaz-s.vercel.app/">faiyaz-s.vercel.app</link>',
+            s["link"],
         )
     )
     story.append(section_rule())
@@ -145,7 +168,7 @@ def build():
     story.append(Paragraph("EXPERIENCE", s["section"]))
 
     story.append(header_row("upGrad School of Technology", "Bengaluru", s))
-    story.append(Paragraph("Operation and Business Analyst &nbsp;&nbsp; Mar 2026 – Present", s["meta"]))
+    story.append(Paragraph("Operation &amp; Business Analyst &nbsp;&nbsp; Mar 2026 – Present", s["meta"]))
     for item in [
         "Analyze operational and business data to uncover trends and support strategic decisions.",
         "Design and maintain Looker dashboards for KPIs, data delivery outcomes, and program performance.",
@@ -215,7 +238,8 @@ def build():
     projects = [
         (
             "DBRIEF (Debrief F1)",
-            "F1 analytics hub for race data, predictions, and historical analysis. Live at debrieff1.in.",
+            "F1 analytics hub for race data, predictions, and historical analysis. Live at "
+            '<link href="https://www.debrieff1.in/">debrieff1.in</link>.',
         ),
         (
             "Analytical Dashboard & Report Hub",

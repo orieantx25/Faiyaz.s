@@ -47,6 +47,10 @@
   }
 
   html {
+    scroll-behavior: auto;
+  }
+
+  html.smooth-ready {
     scroll-behavior: smooth;
   }
 
