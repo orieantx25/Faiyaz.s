@@ -17,7 +17,17 @@ module.exports = {
     		}
     	},
     	extend: {
+    		fontFamily: {
+    			display: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'system-ui', 'sans-serif'],
+    			sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'system-ui', 'sans-serif'],
+    			mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+    		},
     		colors: {
+    			sage: 'hsl(var(--sage))',
+    			clay: 'hsl(var(--clay))',
+    			parchment: 'hsl(var(--parchment))',
+    			cream: 'hsl(var(--cream))',
+    			ink: 'hsl(var(--ink))',
     			border: 'hsl(var(--border))',
     			input: 'hsl(var(--input))',
     			ring: 'hsl(var(--ring))',
