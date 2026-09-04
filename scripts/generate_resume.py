@@ -5,13 +5,29 @@ from reportlab.lib.enums import TA_LEFT, TA_RIGHT
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
-from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+from reportlab.platypus import (
+    KeepTogether,
+    Paragraph,
+    SimpleDocTemplate,
+    Spacer,
+    Table,
+    TableStyle,
+)
 
 INK = HexColor("#3A3228")
 MUTED = HexColor("#6E645A")
 LINE = HexColor("#D6CFC4")
+LINK = HexColor("#1a5f8a")
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "public" / "Faiyaz_Sabab_Resume.pdf"
+
+PAGE_W, PAGE_H = A4
+LEFT = RIGHT = 0.7 * inch
+TOP = BOTTOM = 0.6 * inch
+CONTENT_W = PAGE_W - LEFT - RIGHT
+# Right column for location / dates
+META_W = 1.55 * inch
+LEFT_W = CONTENT_W - META_W
 
 
 def styles():
@@ -25,75 +41,68 @@ def styles():
             leading=22,
             textColor=INK,
             alignment=TA_LEFT,
-            spaceAfter=2,
+            spaceAfter=1,
         ),
         "location": ParagraphStyle(
             "Location",
             parent=base["Normal"],
             fontName="Times-Roman",
-            fontSize=10.5,
-            leading=13,
+            fontSize=10,
+            leading=12,
             textColor=MUTED,
-            spaceAfter=4,
-        ),
-        "contact": ParagraphStyle(
-            "Contact",
-            parent=base["Normal"],
-            fontName="Times-Roman",
-            fontSize=9.5,
-            leading=13,
-            textColor=MUTED,
-            spaceAfter=10,
+            spaceAfter=3,
         ),
         "link": ParagraphStyle(
             "Link",
             parent=base["Normal"],
             fontName="Times-Roman",
-            fontSize=9.5,
-            leading=13,
-            textColor=HexColor("#1a5f8a"),
-            spaceAfter=10,
+            fontSize=9,
+            leading=12,
+            textColor=LINK,
+            spaceAfter=2,
         ),
         "section": ParagraphStyle(
             "Section",
             parent=base["Normal"],
             fontName="Times-Bold",
-            fontSize=11,
-            leading=14,
+            fontSize=10.5,
+            leading=13,
             textColor=INK,
-            spaceBefore=10,
-            spaceAfter=4,
+            spaceBefore=11,
+            spaceAfter=3,
         ),
         "body": ParagraphStyle(
             "Body",
             parent=base["Normal"],
             fontName="Times-Roman",
-            fontSize=10,
-            leading=13,
+            fontSize=9.5,
+            leading=12.5,
             textColor=INK,
+            spaceAfter=2,
         ),
         "role": ParagraphStyle(
             "Role",
             parent=base["Normal"],
             fontName="Times-Bold",
-            fontSize=10.5,
-            leading=13,
+            fontSize=10,
+            leading=12.5,
             textColor=INK,
         ),
         "meta": ParagraphStyle(
             "Meta",
             parent=base["Normal"],
             fontName="Times-Italic",
-            fontSize=9.5,
-            leading=12,
+            fontSize=9,
+            leading=11.5,
             textColor=MUTED,
+            spaceAfter=1,
         ),
         "right": ParagraphStyle(
             "Right",
             parent=base["Normal"],
             fontName="Times-Roman",
-            fontSize=9.5,
-            leading=12,
+            fontSize=9,
+            leading=11.5,
             textColor=MUTED,
             alignment=TA_RIGHT,
         ),
@@ -101,26 +110,112 @@ def styles():
             "Bullet",
             parent=base["Normal"],
             fontName="Times-Roman",
-            fontSize=10,
-            leading=13,
+            fontSize=9.5,
+            leading=12.5,
             textColor=INK,
-            leftIndent=12,
-            bulletIndent=0,
+            leftIndent=11,
+            firstLineIndent=0,
+            spaceBefore=0,
+            spaceAfter=1,
+        ),
+        "project_title": ParagraphStyle(
+            "ProjectTitle",
+            parent=base["Normal"],
+            fontName="Times-Bold",
+            fontSize=10,
+            leading=12.5,
+            textColor=INK,
+            spaceBefore=2,
+            spaceAfter=1,
         ),
     }
 
 
+# ReportLab tables sit flush on the frame edge; flow Paragraphs ink ~6pt inset.
+# Match that so company/school names line up with section body text.
+TEXT_INSET = 6
+
+
 def header_row(left, right, s):
-    return Table(
+    table = Table(
         [[Paragraph(left, s["role"]), Paragraph(right, s["right"])]],
-        colWidths=[5.3 * inch, 1.9 * inch],
+        colWidths=[LEFT_W, META_W],
     )
+    table.setStyle(
+        TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (0, -1), TEXT_INSET),
+                ("LEFTPADDING", (1, 0), (1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
+            ]
+        )
+    )
+    return table
+
+
+def education_row(school, dates, detail, s):
+    """School + dates on one row, degree under school — shared column edges."""
+    table = Table(
+        [
+            [Paragraph(school, s["role"]), Paragraph(dates, s["right"])],
+            [Paragraph(detail, s["body"]), ""],
+        ],
+        colWidths=[LEFT_W, META_W],
+    )
+    table.setStyle(
+        TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (0, -1), TEXT_INSET),
+                ("LEFTPADDING", (1, 0), (1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, 0), 1),
+                ("BOTTOMPADDING", (0, 1), (-1, 1), 4),
+            ]
+        )
+    )
+    return table
 
 
 def section_rule():
-    rule = Table([[""]], colWidths=[7.2 * inch], rowHeights=[1])
-    rule.setStyle(TableStyle([("LINEABOVE", (0, 0), (-1, -1), 0.6, LINE)]))
+    rule = Table([[""]], colWidths=[CONTENT_W], rowHeights=[1])
+    rule.setStyle(
+        TableStyle(
+            [
+                ("LINEABOVE", (0, 0), (-1, -1), 0.6, LINE),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                ("TOPPADDING", (0, 0), (-1, -1), 2),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ]
+        )
+    )
     return rule
+
+
+def bullets(items, s):
+    return [Paragraph(f"• {item}", s["bullet"]) for item in items]
+
+
+def job_block(company, place, role_line, items, s, gap_after=6):
+    parts = [header_row(company, place, s), Paragraph(role_line, s["meta"]), *bullets(items, s)]
+    if gap_after:
+        parts.append(Spacer(1, gap_after))
+    return KeepTogether(parts)
+
+
+def project_block(title, desc, s):
+    return KeepTogether(
+        [
+            Paragraph(title, s["project_title"]),
+            Paragraph(desc, s["body"]),
+            Spacer(1, 5),
+        ]
+    )
 
 
 def build():
@@ -129,10 +224,10 @@ def build():
     doc = SimpleDocTemplate(
         str(OUTPUT),
         pagesize=A4,
-        leftMargin=0.65 * inch,
-        rightMargin=0.65 * inch,
-        topMargin=0.55 * inch,
-        bottomMargin=0.55 * inch,
+        leftMargin=LEFT,
+        rightMargin=RIGHT,
+        topMargin=TOP,
+        bottomMargin=BOTTOM,
         title="Faiyaz Sabab Resume",
         author="Faiyaz Sabab",
     )
@@ -144,14 +239,21 @@ def build():
         Paragraph(
             '<link href="mailto:sababfaiyaz25@gmail.com">sababfaiyaz25@gmail.com</link>'
             " &nbsp;|&nbsp; "
-            '<link href="https://www.linkedin.com/in/faiyaz-sabab-0925-cse">linkedin.com/in/faiyaz-sabab-0925-cse</link>'
-            " &nbsp;|&nbsp; "
-            '<link href="https://github.com/orieantx25">github.com/orieantx25</link>'
-            " &nbsp;|&nbsp; "
-            '<link href="https://faiyaz-s.vercel.app/">faiyaz-s.vercel.app</link>',
+            '<link href="https://www.linkedin.com/in/faiyaz-sabab-0925-cse">linkedin.com/in/faiyaz-sabab-0925-cse</link>',
             s["link"],
         )
     )
+    story.append(
+        Paragraph(
+            '<link href="https://github.com/orieantx25">github.com/orieantx25</link>'
+            " &nbsp;|&nbsp; "
+            '<link href="https://faiyaz-s.vercel.app/">faiyaz-s.vercel.app</link>'
+            " &nbsp;|&nbsp; "
+            '<link href="https://www.debrieff1.in/">debrieff1.in</link>',
+            s["link"],
+        )
+    )
+    story.append(Spacer(1, 4))
     story.append(section_rule())
 
     story.append(Paragraph("SUMMARY", s["section"]))
@@ -167,70 +269,89 @@ def build():
 
     story.append(Paragraph("EXPERIENCE", s["section"]))
 
-    story.append(header_row("upGrad School of Technology", "Bengaluru", s))
-    story.append(Paragraph("Operation &amp; Business Analyst &nbsp;&nbsp; Mar 2026 – Present", s["meta"]))
-    for item in [
-        "Analyze operational and business data to uncover trends and support strategic decisions.",
-        "Design and maintain Looker dashboards for KPIs, data delivery outcomes, and program performance.",
-        "Identify bottlenecks in delivery pipelines and improve reporting accuracy through validation and structured processes.",
-        "Built a full Python UI dashboard and report hub for internal stakeholders.",
-    ]:
-        story.append(Paragraph(f"• {item}", s["bullet"]))
-    story.append(Spacer(1, 4))
-    story.append(Paragraph("Growth & Strategy Analyst &nbsp;&nbsp; Oct 2025 – Apr 2026", s["meta"]))
-    for item in [
-        "Supported growth initiatives through acquisition, retention, and revenue tracking.",
-        "Built databases from scratch and analyzed structured datasets for GTM opportunities.",
-        "Partnered across teams on funnel, campaign, and market analysis.",
-    ]:
-        story.append(Paragraph(f"• {item}", s["bullet"]))
+    upgrad = [
+        header_row("upGrad School of Technology", "Bengaluru", s),
+        Paragraph("Operation &amp; Business Analyst &nbsp;&nbsp; Mar 2026 – Present", s["meta"]),
+        *bullets(
+            [
+                "Analyze operational and business data to uncover trends and support strategic decisions.",
+                "Design and maintain Looker dashboards for KPIs, data delivery outcomes, and program performance.",
+                "Identify bottlenecks in delivery pipelines and improve reporting accuracy through validation and structured processes.",
+                "Built a full Python UI dashboard and report hub for internal stakeholders.",
+            ],
+            s,
+        ),
+        Spacer(1, 3),
+        Paragraph("Growth &amp; Strategy Analyst &nbsp;&nbsp; Oct 2025 – Apr 2026", s["meta"]),
+        *bullets(
+            [
+                "Supported growth initiatives through acquisition, retention, and revenue tracking.",
+                "Built databases from scratch and analyzed structured datasets for GTM opportunities.",
+                "Partnered across teams on funnel, campaign, and market analysis.",
+            ],
+            s,
+        ),
+        Spacer(1, 6),
+    ]
+    story.append(KeepTogether(upgrad))
 
-    story.append(Spacer(1, 8))
-    story.append(header_row("GyanX (Freelance)", "Bengaluru", s))
-    story.append(Paragraph("Product & AI Lead &nbsp;&nbsp; Sep 2025 – Aug 2026", s["meta"]))
-    for item in [
-        "Led product and AI work for an EdTech venture focused on personalized, data-driven learning.",
-        "Designed RAG prototypes, learning workflows, and analytics-minded product surfaces.",
-    ]:
-        story.append(Paragraph(f"• {item}", s["bullet"]))
-
-    story.append(Spacer(1, 8))
-    story.append(header_row("TekWissen", "Visakhapatnam", s))
-    story.append(Paragraph("Jr. Program Coordinator &nbsp;&nbsp; Nov 2024 – Sep 2025", s["meta"]))
-    for item in [
-        "Built workforce and operations analytics dashboards for data-driven decisions.",
-        "Validated structured and unstructured datasets and managed Azure SQL with SLA discipline.",
-        "Streamlined ATS filtering pipelines and partnered with clients including Amazon, Unisys, and ThermoFisher.",
-    ]:
-        story.append(Paragraph(f"• {item}", s["bullet"]))
-
-    story.append(Spacer(1, 8))
-    story.append(header_row("Indian Oil Corporation Limited", "Digboi", s))
-    story.append(Paragraph("Summer Intern &nbsp;&nbsp; Aug 2023 – Sep 2023", s["meta"]))
     story.append(
-        Paragraph(
-            "• Developed an ANPR authentication system using YOLOv8 and EasyOCR, reducing manual vehicle processing.",
-            s["bullet"],
+        job_block(
+            "GyanX (Freelance)",
+            "Bengaluru",
+            "Product &amp; AI Lead &nbsp;&nbsp; Sep 2025 – Aug 2026",
+            [
+                "Led product and AI work for an EdTech venture focused on personalized, data-driven learning.",
+                "Designed RAG prototypes, learning workflows, and analytics-minded product surfaces.",
+            ],
+            s,
         )
     )
-
-    story.append(Spacer(1, 8))
-    story.append(header_row("Cotton University", "Guwahati", s))
-    story.append(Paragraph("Research Intern &nbsp;&nbsp; Aug 2022 – Sep 2022", s["meta"]))
     story.append(
-        Paragraph(
-            "• Researched backtracking and search algorithms, documenting performance limits and optimization patterns.",
-            s["bullet"],
+        job_block(
+            "TekWissen",
+            "Visakhapatnam",
+            "Jr. Program Coordinator &nbsp;&nbsp; Nov 2024 – Sep 2025",
+            [
+                "Built workforce and operations analytics dashboards for data-driven decisions.",
+                "Validated structured and unstructured datasets and managed Azure SQL with SLA discipline.",
+                "Streamlined ATS filtering pipelines and partnered with clients including Amazon, Unisys, and ThermoFisher.",
+            ],
+            s,
         )
     )
-
-    story.append(Spacer(1, 8))
-    story.append(header_row("Maan Ki Umeed", "Remote", s))
-    story.append(Paragraph("Social Media Analyst &nbsp;&nbsp; Jan 2021 – Oct 2022", s["meta"]))
     story.append(
-        Paragraph(
-            "• Used content performance data and A/B testing to refine targeting; ~30% lift in post engagement.",
-            s["bullet"],
+        job_block(
+            "Indian Oil Corporation Limited",
+            "Digboi",
+            "Summer Intern &nbsp;&nbsp; Aug 2023 – Sep 2023",
+            [
+                "Developed an ANPR authentication system using YOLOv8 and EasyOCR, reducing manual vehicle processing.",
+            ],
+            s,
+        )
+    )
+    story.append(
+        job_block(
+            "Cotton University",
+            "Guwahati",
+            "Research Intern &nbsp;&nbsp; Aug 2022 – Sep 2022",
+            [
+                "Researched backtracking and search algorithms, documenting performance limits and optimization patterns.",
+            ],
+            s,
+        )
+    )
+    story.append(
+        job_block(
+            "Maan Ki Umeed",
+            "Remote",
+            "Social Media Analyst &nbsp;&nbsp; Jan 2021 – Oct 2022",
+            [
+                "Used content performance data and A/B testing to refine themes, formats, and audience targeting.",
+            ],
+            s,
+            gap_after=0,
         )
     )
 
@@ -238,41 +359,55 @@ def build():
     projects = [
         (
             "DBRIEF (Debrief F1)",
-            "F1 analytics hub for race data, predictions, and historical analysis. Live at "
-            '<link href="https://www.debrieff1.in/">debrieff1.in</link>.',
+            "Built an F1 analytics product so fans and analysts could read race week without digging through "
+            "scattered standings and session noise. Combined race data, historical context, prediction views, "
+            "and a dashboard UI into one briefing surface — live at "
+            '<link href="https://www.debrieff1.in/">debrieff1.in</link> — so session signal stays in one place '
+            "instead of across tabs and feeds.",
         ),
         (
-            "Analytical Dashboard & Report Hub",
-            "Looker dashboards and a full Python UI report hub for upGrad School of Technology.",
+            "Analytical Dashboard &amp; Report Hub",
+            "Stakeholders at upGrad School of Technology needed operational answers without waiting on ad-hoc "
+            "spreadsheets. Built Looker dashboards for KPIs and delivery outcomes, then a Python report hub with "
+            "SQL-backed validation and a full UI so teams could open structured reports themselves. The result was "
+            "a shared internal surface for program performance and data delivery — not a one-off slide deck.",
         ),
         (
             "Growth Analytics Dashboard",
-            "Acquisition, retention, and revenue views for GTM decisions using Power BI, SQL, and Looker Studio.",
+            "Growth work needed one place to see acquisition, retention, and revenue instead of siloed campaign "
+            "exports. Used Power BI, SQL, Python, and Looker Studio to model funnel conversion, cohort behaviour, "
+            "and campaign performance so marketing, product, and sales could plan GTM moves from the same views. "
+            "Teams stopped debating whose sheet was current and started acting on a shared funnel picture.",
         ),
         (
             "ANPR Authentication System",
-            "Computer-vision vehicle authentication with YOLOv8 and EasyOCR; ~90% efficiency improvement.",
+            "Indian Oil’s site entry still relied on slow manual vehicle checks. Built an automatic number-plate "
+            "pipeline in Python with YOLOv8 for detection and EasyOCR for plate reading (PyTorch under the hood), "
+            "wired into the authentication flow so plates could be verified in near real time. Gate staff spent "
+            "less time on repetitive entry checks and the site gained a repeatable vision-based process.",
         ),
         (
             "Assamese–English Translator",
-            "Transformer-based bilingual NLP model trained on 50K+ sentence pairs.",
+            "Wanted usable bilingual translation for Assamese–English evaluation loops, not a demo that only "
+            "worked on clean textbook lines. Trained a transformer seq2seq model in TensorFlow and Python with "
+            "careful preprocessing and tokenization on a curated sentence corpus, then iterated on data quality "
+            "before chasing architecture tweaks. Produced a working bilingual model that could be scored and "
+            "improved in a real train–evaluate cycle.",
         ),
     ]
     for title, desc in projects:
-        story.append(Paragraph(title, s["role"]))
-        story.append(Paragraph(desc, s["body"]))
-        story.append(Spacer(1, 3))
+        story.append(project_block(title, desc, s))
 
     story.append(Paragraph("SKILLS", s["section"]))
     story.append(
         Paragraph(
-            "<b>Analytics & BI:</b> Power BI, Looker, Looker Studio, Tableau, Excel, DAX, ETL, data visualization",
+            "<b>Analytics &amp; BI:</b> Power BI, Looker, Looker Studio, Tableau, Excel, DAX, ETL, data visualization",
             s["body"],
         )
     )
     story.append(
         Paragraph(
-            "<b>Data & code:</b> Python, SQL, Pandas, NumPy, statistical analysis, Azure SQL, PostgreSQL",
+            "<b>Data &amp; code:</b> Python, SQL, Pandas, NumPy, statistical analysis, Azure SQL, PostgreSQL",
             s["body"],
         )
     )
@@ -284,27 +419,38 @@ def build():
     )
 
     story.append(Paragraph("EDUCATION", s["section"]))
-    story.append(header_row("Assam Science and Technology University", "2020 – 2024", s))
-    story.append(Paragraph("B.Tech, Computer Science", s["body"]))
-    story.append(Spacer(1, 4))
-    story.append(header_row("Kendriya Vidyalaya, Nagaon", "2008 – 2020", s))
-    story.append(Paragraph("AISSCE / AISSE, Science (PCM)", s["body"]))
-
-    story.append(Paragraph("CERTIFICATIONS", s["section"]))
     story.append(
-        Paragraph(
-            "Introduction to Data Science (LinkedIn Learning) &nbsp;|&nbsp; "
-            "Prompt Engineering for Generative AI (LinkedIn) &nbsp;|&nbsp; "
-            "Deloitte Data Analytics Job Simulation &nbsp;|&nbsp; "
-            "Career Skills in Data Analytics (LinkedIn) &nbsp;|&nbsp; "
-            "Data Analysis & Power BI (Tutedude) &nbsp;|&nbsp; "
-            "Business Analysis (Microsoft & LinkedIn)",
-            s["body"],
+        education_row(
+            "Assam Science and Technology University",
+            "2020 – 2024",
+            "B.Tech, Computer Science",
+            s,
+        )
+    )
+    story.append(
+        education_row(
+            "Kendriya Vidyalaya, Nagaon",
+            "2008 – 2020",
+            "AISSCE / AISSE, Science (PCM)",
+            s,
         )
     )
 
+    story.append(Paragraph("CERTIFICATIONS", s["section"]))
+    for cert in [
+        "Introduction to Data Science (LinkedIn Learning)",
+        "Prompt Engineering for Generative AI (LinkedIn)",
+        "Deloitte Data Analytics Job Simulation",
+        "Career Skills in Data Analytics (LinkedIn)",
+        "Data Analysis &amp; Power BI (Tutedude)",
+        "Business Analysis (Microsoft &amp; LinkedIn)",
+    ]:
+        story.append(Paragraph(f"• {cert}", s["bullet"]))
+
     doc.build(story)
     print(OUTPUT)
+    print(f"content width: {CONTENT_W:.1f}pt ({CONTENT_W / inch:.2f}in)")
+    print(f"margins L/R {LEFT / inch:.2f}in  T/B {TOP / inch:.2f}in")
 
 
 if __name__ == "__main__":
