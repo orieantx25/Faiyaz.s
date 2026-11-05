@@ -1,91 +1,89 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { profile, stats } from '@/lib/content'
+import { profile } from '@/lib/content'
+import SignalPlane from '@/components/SignalPlane'
+
+const ease = [0.16, 1, 0.3, 1]
+const [firstName, ...rest] = profile.name.split(' ')
+const lastName = rest.join(' ')
 
 export default function Hero({ ready = true }) {
   return (
     <section
       id="top"
-      className="relative min-h-[100svh] flex flex-col justify-center overflow-hidden bg-atmosphere bg-grid"
+      className="relative min-h-[100svh] flex flex-col justify-end overflow-hidden bg-void bg-mesh-dark"
     >
-      <div className="relative z-10 max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-16 pt-28 pb-20 text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="font-mono text-xs sm:text-sm tracking-[0.22em] uppercase text-muted-foreground mb-8"
-        >
-          data → decision · {profile.location}
-        </motion.p>
+      <SignalPlane ready={ready} />
 
-        <motion.h1
-          id="hero-name"
-          initial={{ opacity: 0, y: 28 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }}
-          transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-ink leading-[1.05] mb-5"
-        >
-          {profile.name}
-        </motion.h1>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }}
-          transition={{ duration: 0.7, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-          className="text-xl sm:text-2xl md:text-3xl font-medium text-ink/80 tracking-tight mb-4"
-        >
-          {profile.headline}
-        </motion.h2>
+      <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-16 pt-28 pb-14 md:pb-20">
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={ready ? { opacity: 1, scaleX: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.8, ease }}
+          className="origin-left h-px w-24 mb-8 bg-signal/70"
+        />
 
         <motion.p
           initial={{ opacity: 0, y: 14 }}
           animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }}
-          transition={{ duration: 0.7, delay: 0.28, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-2xl mx-auto text-base sm:text-lg text-muted-foreground leading-relaxed mb-10"
+          transition={{ duration: 0.65, ease }}
+          className="section-eyebrow text-white/40 mb-5"
         >
-          {profile.tagline}
-          <br />
-          {profile.taglineRest}
+          {profile.location} · data → decision
+        </motion.p>
+
+        <motion.h1
+          id="hero-name"
+          initial={{ opacity: 0, y: 40 }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }}
+          transition={{ duration: 0.95, delay: 0.05, ease }}
+          className="font-display text-[clamp(3.4rem,13vw,8rem)] leading-[0.88] text-white tracking-tight max-w-5xl"
+        >
+          <span className="block">{firstName}</span>
+          <span className="block text-white/90">
+            {lastName}
+            <span className="text-signal">.</span>
+          </span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 18 }}
+          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }}
+          transition={{ duration: 0.75, delay: 0.2, ease }}
+          className="mt-7 max-w-lg text-base sm:text-lg text-white/58 leading-relaxed font-light"
+        >
+          <span className="text-signal font-display text-lg sm:text-xl tracking-tight not-italic font-semibold">
+            {profile.headline}
+          </span>
+          <span className="block mt-2">{profile.tagline}</span>
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }}
-          transition={{ duration: 0.6, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-wrap justify-center gap-3 mb-16"
+          transition={{ duration: 0.65, delay: 0.32, ease }}
+          className="mt-10 flex flex-wrap gap-3"
         >
-          <a
-            href="#projects"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-ink text-cream text-sm font-medium hover:bg-ink/90 transition-colors"
-          >
-            See the work
+          <a href="#year" className="btn-primary">
+            Scroll the year
           </a>
-          <a
-            href="#building"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border bg-cream text-ink text-sm font-medium hover:border-sage/40 transition-colors"
-          >
-            Building something
+          <a href="#building" className="btn-ghost">
+            What I&apos;m shipping
           </a>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={ready ? { opacity: 1, y: 0 } : { opacity: 0 }}
-          transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-3 gap-4 sm:gap-8 max-w-xl mx-auto border-t border-border pt-8"
+          initial={{ opacity: 0 }}
+          animate={ready ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ delay: 0.6, duration: 1 }}
+          className="mt-14 md:mt-16 flex items-center gap-3 text-white/30"
+          aria-hidden="true"
         >
-          {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <p className="font-mono text-2xl sm:text-3xl text-ink tracking-tight">
-                {s.value}
-                {s.suffix}
-              </p>
-              <p className="font-mono text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground mt-1">
-                {s.label}
-              </p>
-            </div>
-          ))}
+          <span className="signal-dot w-1.5 h-1.5 rounded-full bg-signal" />
+          <span className="font-mono text-[10px] tracking-[0.35em] uppercase">
+            Enter the story
+          </span>
         </motion.div>
       </div>
     </section>

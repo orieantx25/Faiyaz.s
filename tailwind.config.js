@@ -18,9 +18,9 @@ module.exports = {
     	},
     	extend: {
     		fontFamily: {
-    			display: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'system-ui', 'sans-serif'],
-    			sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'system-ui', 'sans-serif'],
-    			mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+    			display: ['Syne', 'system-ui', 'sans-serif'],
+    			sans: ['Outfit', 'system-ui', 'sans-serif'],
+    			mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
     		},
     		colors: {
     			sage: 'hsl(var(--sage))',
@@ -28,6 +28,8 @@ module.exports = {
     			parchment: 'hsl(var(--parchment))',
     			cream: 'hsl(var(--cream))',
     			ink: 'hsl(var(--ink))',
+    			signal: 'hsl(var(--signal))',
+    			void: 'hsl(var(--void))',
     			border: 'hsl(var(--border))',
     			input: 'hsl(var(--input))',
     			ring: 'hsl(var(--ring))',

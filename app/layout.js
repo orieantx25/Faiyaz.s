@@ -109,7 +109,7 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <link rel="canonical" href="https://faiyazsabab.com" />
-        <meta name="theme-color" content="#F7F3EC" />
+        <meta name="theme-color" content="#0B1218" />
       </head>
       <body className="antialiased font-sans">{children}</body>
     </html>

@@ -1,14 +1,15 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Github, User, Briefcase, Zap, Mail, Layers } from 'lucide-react'
+import { Github, Compass, Briefcase, BookOpen, Mail, Layers, Sparkles } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { profile } from '@/lib/content'
 
 const navItems = [
-  { name: 'About', href: '#top', icon: User },
+  { name: 'Story', href: '#top', icon: Compass },
+  { name: 'The year', href: '#year', icon: Sparkles },
+  { name: 'Notes', href: '#learnings', icon: BookOpen },
   { name: 'Work', href: '#projects', icon: Briefcase },
-  { name: 'Skills', href: '#skills', icon: Zap },
   { name: 'Building', href: '#building', icon: Layers },
   { name: 'Contact', href: '#contact', icon: Mail },
 ]
@@ -33,13 +34,13 @@ export default function Navigation() {
         setShowNavName(window.scrollY > window.innerHeight * 0.35)
       }
 
-      const sections = ['projects', 'skills', 'building', 'contact']
+      const sections = ['year', 'learnings', 'projects', 'building', 'contact']
       let current = ''
       for (const id of sections) {
         const el = document.getElementById(id)
         if (el) {
           const rect = el.getBoundingClientRect()
-          if (rect.top <= 120 && rect.bottom >= 120) {
+          if (rect.top <= 140 && rect.bottom >= 140) {
             current = id
             break
           }
@@ -48,125 +49,103 @@ export default function Navigation() {
       setActiveSection(current)
     }
 
-    window.addEventListener('scroll', handleScroll)
     handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollToSection = (href) => {
-    if (href === '#top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-      return
-    }
-    const el = document.querySelector(href)
-    if (el) {
-      const y = el.getBoundingClientRect().top + window.scrollY - 80
-      window.scrollTo({ top: y, behavior: 'smooth' })
-    }
-  }
-
   return (
     <>
-      <motion.nav
+      <header
         ref={navRef}
-        initial={{ y: -60 }}
-        animate={{ y: 0 }}
-        className={`fixed left-0 right-0 mx-auto z-50 transition-all duration-300 w-full ${
-          isScrolled
-            ? 'max-w-[95%] lg:max-w-4xl top-3 bg-cream/80 backdrop-blur-xl border border-border/60 shadow-sm rounded-full'
-            : 'max-w-full lg:max-w-6xl top-0 bg-transparent'
+        className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 ${
+          isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-border' : 'bg-transparent'
         }`}
       >
-        <div className="mx-auto px-5 lg:px-8">
-          <div className="flex items-center justify-between h-12 md:h-14">
-            <div className="min-w-[8.5rem] sm:min-w-[11rem]">
-              <AnimatePresence mode="wait">
-                {showNavName && (
-                  <motion.button
-                    key="nav-full-name"
-                    type="button"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    className="text-sm sm:text-base font-medium text-ink tracking-tight whitespace-nowrap"
-                  >
-                    {profile.name}
-                  </motion.button>
-                )}
-              </AnimatePresence>
-            </div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16 h-14 md:h-16 flex items-center justify-between">
+          <a href="#top" className="relative h-6 flex items-center min-w-[9rem]">
+            <AnimatePresence>
+              {showNavName && (
+                <motion.span
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  className={`font-display text-sm tracking-tight ${
+                    isScrolled ? 'text-ink' : 'text-white'
+                  }`}
+                >
+                  {profile.name}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </a>
 
-            <div className="hidden md:flex items-center gap-6">
-              {navItems.map((item) => {
-                const isActive =
-                  item.name === 'About' ? !activeSection : activeSection === item.href.slice(1)
-                return (
-                  <button
-                    key={item.name}
-                    type="button"
-                    onClick={() => scrollToSection(item.href)}
-                    className={`text-sm transition-colors ${
-                      isActive ? 'text-ink' : 'text-muted-foreground hover:text-ink'
-                    }`}
-                  >
-                    {item.name}
-                  </button>
-                )
-              })}
-              <a
-                href={profile.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 text-sm bg-ink text-cream rounded-full hover:bg-ink/90 transition-colors"
-              >
-                <Github className="w-3.5 h-3.5" />
-                GitHub
-              </a>
-            </div>
+          <nav className="hidden md:flex items-center gap-0.5">
+            {navItems.map((item) => {
+              const id = item.href.slice(1)
+              const active = item.name === 'Story' ? !activeSection : activeSection === id
+              return (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className={`relative px-3 py-1.5 text-xs font-medium tracking-wide transition ${
+                    active
+                      ? isScrolled
+                        ? 'text-ink'
+                        : 'text-white'
+                      : isScrolled
+                        ? 'text-muted-foreground hover:text-ink'
+                        : 'text-white/50 hover:text-white'
+                  }`}
+                >
+                  {item.name}
+                  {active && (
+                    <span
+                      className={`absolute left-3 right-3 -bottom-0.5 h-px ${
+                        isScrolled ? 'bg-signal' : 'bg-signal/80'
+                      }`}
+                    />
+                  )}
+                </a>
+              )
+            })}
+          </nav>
 
-            <div className="md:hidden">
-              <a
-                href={profile.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 inline-flex"
-                aria-label="GitHub"
-              >
-                <Github className="w-5 h-5 text-ink" />
-              </a>
-            </div>
-          </div>
+          <a
+            href={profile.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`p-2 rounded-full transition ${
+              isScrolled ? 'text-ink hover:bg-secondary' : 'text-white/70 hover:text-white'
+            }`}
+            aria-label="GitHub"
+          >
+            <Github className="w-4 h-4" />
+          </a>
         </div>
-      </motion.nav>
+      </header>
 
-      <motion.nav
-        initial={{ y: 80 }}
-        animate={{ y: 0 }}
-        className="md:hidden fixed bottom-5 left-0 right-0 mx-auto w-[92%] z-50 pointer-events-none"
-      >
-        <div className="bg-cream/90 backdrop-blur-xl border border-border shadow-sm rounded-full px-3 py-2.5 flex items-center justify-between mx-auto max-w-md pointer-events-auto">
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-50 border-t border-border bg-background/95 backdrop-blur-md pb-[env(safe-area-inset-bottom)]">
+        <div className="flex justify-around px-1 py-2">
           {navItems.map((item) => {
             const Icon = item.icon
-            const isActive =
-              item.name === 'About' ? !activeSection : activeSection === item.href.slice(1)
+            const id = item.href.slice(1)
+            const active = item.name === 'Story' ? !activeSection : activeSection === id
             return (
-              <button
+              <a
                 key={item.name}
-                type="button"
-                onClick={() => scrollToSection(item.href)}
-                className={`flex flex-col items-center gap-0.5 transition-all ${
-                  isActive ? 'text-sage' : 'text-muted-foreground'
+                href={item.href}
+                className={`flex flex-col items-center gap-0.5 px-2 py-1 min-w-[3rem] ${
+                  active ? 'text-signal' : 'text-muted-foreground'
                 }`}
               >
                 <Icon className="w-4 h-4" />
-                <span className="text-[9px] font-mono tracking-wide">{item.name}</span>
-              </button>
+                <span className="text-[9px] font-medium">{item.name}</span>
+              </a>
             )
           })}
         </div>
-      </motion.nav>
+      </nav>
     </>
   )
 }

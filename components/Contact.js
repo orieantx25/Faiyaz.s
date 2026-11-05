@@ -24,12 +24,16 @@ export default function Contact() {
         whileInView="visible"
         viewport={{ once: true, margin: '-80px' }}
         variants={containerVariants}
-        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16 py-20 md:py-28 border-t border-border"
+        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16 py-24 md:py-32 border-t border-border"
       >
         <motion.div variants={itemVariants} className="mb-12 max-w-2xl">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl text-ink tracking-tight">
-            Let&apos;s connect
+          <p className="section-eyebrow mb-4">next chapter</p>
+          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl text-ink tracking-tight">
+            Let&apos;s build the next signal
           </h2>
+          <p className="mt-4 text-muted-foreground leading-relaxed">
+            I&apos;m posting more of the journey on LinkedIn — ops learnings, builds, and what ships next.
+          </p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
@@ -42,7 +46,7 @@ export default function Contact() {
               href={`https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="col-span-2 flex items-center justify-center gap-3 px-6 rounded-2xl bg-ink text-cream font-medium"
+              className="col-span-2 flex items-center justify-center gap-3 px-6 rounded-2xl bg-signal text-white font-medium shadow-[0_12px_32px_-12px_hsl(168_78%_30%_/_0.55)]"
             >
               <Mail className="w-5 h-5" />
               Email me
@@ -52,9 +56,9 @@ export default function Contact() {
               href={profile.resume}
               download="Faiyaz_Sabab_Resume.pdf"
               type="application/pdf"
-              className="col-span-2 flex items-center justify-center gap-3 px-6 rounded-2xl border border-border bg-cream text-ink font-medium hover:border-sage/40 transition-colors"
+              className="col-span-2 flex items-center justify-center gap-3 px-6 rounded-2xl border border-border bg-cream text-ink font-medium hover:border-signal/40 transition-colors"
             >
-              <FileText className="w-5 h-5 text-sage" />
+              <FileText className="w-5 h-5 text-signal" />
               Resume
             </motion.a>
             <motion.a
@@ -62,9 +66,9 @@ export default function Contact() {
               href={profile.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-4 rounded-2xl border border-border bg-cream text-ink font-medium hover:border-sage/40 transition-colors"
+              className="flex items-center justify-center gap-2 px-4 rounded-2xl border border-border bg-cream text-ink font-medium hover:border-signal/40 transition-colors"
             >
-              <Linkedin className="w-5 h-5 text-sage" />
+              <Linkedin className="w-5 h-5 text-signal" />
               LinkedIn
             </motion.a>
             <motion.a
@@ -72,7 +76,7 @@ export default function Contact() {
               href={profile.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-4 rounded-2xl border border-border bg-cream text-ink font-medium hover:border-sage/40 transition-colors"
+              className="flex items-center justify-center gap-2 px-4 rounded-2xl border border-border bg-cream text-ink font-medium hover:border-signal/40 transition-colors"
             >
               <Github className="w-5 h-5 text-clay" />
               GitHub

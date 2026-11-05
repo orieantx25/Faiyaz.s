@@ -4,7 +4,9 @@ import { useState, useCallback, useEffect } from 'react'
 import HelloIntro from '@/components/HelloIntro'
 import Hero from '@/components/Hero'
 import ScrollStory from '@/components/ScrollStory'
+import YearAtSot from '@/components/YearAtSot'
 import Statistics from '@/components/Statistics'
+import Learnings from '@/components/Learnings'
 import Projects from '@/components/Projects'
 import Building from '@/components/Building'
 import Contact from '@/components/Contact'
@@ -26,7 +28,6 @@ export default function App() {
 
     jumpToHero()
 
-    // Re-enable smooth scrolling for in-page nav after the page has settled at top
     const ready = window.setTimeout(() => {
       document.documentElement.classList.add('smooth-ready')
     }, 50)
@@ -55,7 +56,9 @@ export default function App() {
         <Navigation />
         <Hero ready={introDone} />
         <ScrollStory />
+        <YearAtSot />
         <Statistics />
+        <Learnings />
         <Projects />
         <Building />
         <Contact />

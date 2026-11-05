@@ -2,315 +2,148 @@
 
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { useState } from 'react'
-import { BarChart, PieChart, ToolMixChart, DeliveryTrendChart, DomainBarChart, SkillRadarChart } from './Charts'
-import {
-  projects,
-  experience,
-  education,
-  certifications,
-  skillGroups,
-} from '@/lib/content'
+import { projects, experience, skillGroups } from '@/lib/content'
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.07 } },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
-}
+const featured = projects.filter((p) => p.featured)
+const more = projects.filter((p) => !p.featured).slice(0, 4)
 
 export default function Projects() {
-  const [hoveredProject, setHoveredProject] = useState(null)
-  const [openKey, setOpenKey] = useState('0-0')
-
   return (
-    <div className="relative">
-      <motion.section
-        id="projects"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
-        variants={containerVariants}
-        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16 py-20 md:py-28"
-      >
-        <motion.div variants={itemVariants} className="mb-12 md:mb-16 text-center mx-auto">
-          <p className="font-mono text-xs tracking-[0.22em] uppercase text-muted-foreground mb-4">
-            ~/featured
-          </p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl text-ink tracking-tight mb-4">
-            Featured work
+    <section id="projects" className="relative bg-atmosphere border-t border-border">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16 py-24 md:py-32">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.55 }}
+          className="max-w-2xl mb-14"
+        >
+          <p className="section-eyebrow mb-4">selected signal</p>
+          <h2 className="font-display text-4xl sm:text-5xl text-ink tracking-tight">
+            Things I&apos;ve made that prove the story
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground whitespace-nowrap">
-            Analytics products and systems — dashboards, hubs, and pipelines that ship answers.
+          <p className="mt-4 text-muted-foreground leading-relaxed">
+            Not a CV dump — chapters where craft met a real question.
           </p>
         </motion.div>
 
-        <div className="space-y-5">
-          {projects.map((project, index) => (
+        <div className="space-y-6 mb-20">
+          {featured.map((p, i) => (
             <motion.article
-              key={project.title}
-              variants={itemVariants}
-              onMouseEnter={() => setHoveredProject(index)}
-              onMouseLeave={() => setHoveredProject(null)}
-              className="code-chrome group"
+              key={p.title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5, delay: i * 0.06 }}
+              className="group relative overflow-hidden rounded-2xl border border-border bg-cream"
             >
-              <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border bg-secondary/50">
-                <span className="w-2.5 h-2.5 rounded-full bg-clay/50" />
-                <span className="w-2.5 h-2.5 rounded-full bg-sage/40" />
-                <span className="w-2.5 h-2.5 rounded-full bg-ink/20" />
-                <span className="ml-3 font-mono text-[11px] text-muted-foreground truncate">
-                  {project.path || `~/projects/${index}`}
-                </span>
-              </div>
-              <div className="p-5 sm:p-7 grid md:grid-cols-[1fr_1.5fr] gap-4 md:gap-8">
-                <div>
-                  <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-sage">
-                    {project.category}
-                  </span>
-                  <div className="flex items-start gap-2 mt-2">
-                    <h3 className="text-xl sm:text-2xl text-ink tracking-tight">{project.title}</h3>
-                    {project.href && (
-                      <a
-                        href={project.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-1.5 text-muted-foreground hover:text-sage transition-colors"
-                        aria-label={`Open ${project.title}`}
-                      >
-                        <ArrowUpRight className="w-4 h-4" />
-                      </a>
-                    )}
-                  </div>
-                  <p className="font-mono text-xs text-muted-foreground mt-2">{project.metrics}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground leading-relaxed mb-4 text-[15px]">
-                    {hoveredProject === index ? project.fullDescription : project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
+              <div className="grid md:grid-cols-[1.1fr_0.9fr]">
+                <div className="p-6 sm:p-8 md:p-10">
+                  <p className="font-mono text-[11px] text-signal mb-3">{p.category}</p>
+                  <h3 className="font-display text-2xl sm:text-3xl text-ink tracking-tight mb-3">
+                    {p.title}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed mb-5">{p.fullDescription}</p>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {p.tech.map((t) => (
                       <span
-                        key={tech}
-                        className="px-2.5 py-1 text-[11px] font-mono text-ink/75 bg-background border border-border rounded-md"
+                        key={t}
+                        className="font-mono text-[10px] px-2.5 py-1 rounded-full border border-border text-muted-foreground"
                       >
-                        {tech}
+                        {t}
                       </span>
                     ))}
+                  </div>
+                  {p.href ? (
+                    <a
+                      href={p.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-signal transition"
+                    >
+                      Open live <ArrowUpRight className="w-4 h-4" />
+                    </a>
+                  ) : (
+                    <p className="font-mono text-[11px] text-muted-foreground">{p.metrics}</p>
+                  )}
+                </div>
+                <div className="relative min-h-[200px] md:min-h-full bg-void bg-mesh-dark p-6 flex items-end">
+                  <div className="w-full">
+                    <p className="font-mono text-[10px] text-white/40 mb-2">{p.path}</p>
+                    <p className="font-display text-xl text-white/90 tracking-tight">{p.metrics}</p>
+                    <div className="mt-6 h-24 flex items-end gap-1.5 opacity-80">
+                      {[40, 65, 48, 78, 55, 88, 62, 70].map((h, idx) => (
+                        <div
+                          key={idx}
+                          className="flex-1 rounded-sm bg-gradient-to-t from-signal/80 to-signal/15"
+                          style={{ height: `${h}%` }}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             </motion.article>
           ))}
         </div>
-      </motion.section>
 
-      {/* Experience — LinkedIn nested roles */}
-      <motion.section
-        id="experience"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
-        variants={containerVariants}
-        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16 py-20 md:py-28 border-t border-border"
-      >
-        <motion.div variants={itemVariants} className="mb-12">
-          <p className="font-mono text-xs tracking-[0.22em] uppercase text-muted-foreground mb-4">
-            experience
-          </p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl text-ink tracking-tight">Experience</h2>
-        </motion.div>
-
-        <div className="space-y-10">
-          {experience.map((company, cIdx) => (
-            <motion.div key={company.company} variants={itemVariants} className="border-b border-border pb-8">
-              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-4">
-                <h3 className="text-xl sm:text-2xl text-ink tracking-tight">{company.company}</h3>
-                <p className="font-mono text-xs text-muted-foreground">{company.location}</p>
+        <div className="mb-20">
+          <p className="section-eyebrow mb-6">also in the lab</p>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {more.map((p) => (
+              <div key={p.title} className="rounded-xl border border-border bg-cream/80 p-5">
+                <h3 className="font-display text-lg text-ink tracking-tight mb-1">{p.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{p.description}</p>
               </div>
-              <div className="space-y-1 border-l border-border ml-1 pl-4 sm:pl-6">
-                {company.roles.map((role, rIdx) => {
-                  const key = `${cIdx}-${rIdx}`
-                  const isOpen = openKey === key
-                  return (
-                    <button
-                      type="button"
-                      key={key}
-                      onClick={() => setOpenKey(isOpen ? '' : key)}
-                      className="w-full text-left py-3 group"
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
-                        <p className="text-base sm:text-lg text-ink/85 group-hover:text-sage transition-colors">
-                          {role.role}
-                        </p>
-                        <p className="font-mono text-xs text-muted-foreground shrink-0">
-                          {role.period}
-                        </p>
-                      </div>
-                      <div
-                        className={`overflow-hidden transition-all duration-300 ${
-                          isOpen ? 'max-h-96 opacity-100 mt-3' : 'max-h-0 opacity-0'
-                        }`}
-                      >
-                        <p className="text-sm text-muted-foreground leading-relaxed mb-3 max-w-3xl">
-                          {role.description}
-                        </p>
-                        <ul className="space-y-1.5">
-                          {role.highlights.map((h) => (
-                            <li
-                              key={h}
-                              className="flex items-start gap-2 text-sm text-muted-foreground"
-                            >
-                              <span className="mt-1.5 w-1 h-1 rounded-full bg-sage shrink-0" />
-                              {h}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </button>
-                  )
-                })}
+            ))}
+          </div>
+        </div>
+
+        <div id="path" className="mb-16">
+          <p className="section-eyebrow mb-4">the path</p>
+          <h3 className="font-display text-2xl sm:text-3xl text-ink tracking-tight mb-8">
+            Roles as chapters — not a LinkedIn mirror
+          </h3>
+          <div className="space-y-0 border-t border-border">
+            {experience.map((company) =>
+              company.roles.map((role) => (
+                <div
+                  key={`${company.company}-${role.role}`}
+                  className="py-6 border-b border-border grid sm:grid-cols-[1fr_auto] gap-2"
+                >
+                  <div>
+                    <p className="font-display text-lg text-ink tracking-tight">{role.role}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {company.company} · {company.location}
+                    </p>
+                  </div>
+                  <p className="font-mono text-[11px] text-muted-foreground sm:text-right">
+                    {role.period}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        <div id="skills">
+          <p className="section-eyebrow mb-6">tools in the kit</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {skillGroups.map((g) => (
+              <div key={g.label}>
+                <p className="font-display text-sm text-ink mb-3">{g.label}</p>
+                <ul className="space-y-1.5">
+                  {g.skills.map((s) => (
+                    <li key={s} className="font-mono text-[12px] text-muted-foreground">
+                      {s}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
-      </motion.section>
-
-      {/* Education */}
-      <motion.section
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
-        variants={containerVariants}
-        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16 py-20 md:py-28 border-t border-border"
-      >
-        <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl text-ink tracking-tight mb-10">
-          Education
-        </motion.h2>
-        <div className="space-y-8">
-          {education.map((edu) => (
-            <motion.div
-              key={edu.institution}
-              variants={itemVariants}
-              className="flex flex-col md:flex-row md:justify-between md:items-baseline gap-2 border-b border-border pb-8"
-            >
-              <div>
-                <h3 className="text-xl text-ink tracking-tight">{edu.institution}</h3>
-                <p className="text-ink/70 mt-1">
-                  {edu.degree} · {edu.field}
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">{edu.description}</p>
-              </div>
-              <p className="font-mono text-xs text-muted-foreground shrink-0">{edu.period}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
-
-      {/* Certifications */}
-      <motion.section
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
-        variants={containerVariants}
-        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16 py-20 md:py-28 border-t border-border"
-      >
-        <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl text-ink tracking-tight mb-10">
-          Certifications
-        </motion.h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {certifications.map((cert) => (
-            <motion.div key={cert.title} variants={itemVariants} className="border-t border-sage/25 pt-4">
-              <h3 className="text-base text-ink mb-1 tracking-tight">{cert.title}</h3>
-              <p className="text-sm text-muted-foreground">{cert.issuer}</p>
-              <p className="font-mono text-xs text-muted-foreground/70 mt-1">{cert.year}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
-
-      {/* Skills */}
-      <motion.section
-        id="skills"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
-        variants={containerVariants}
-        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16 py-20 md:py-28 border-t border-border"
-      >
-        <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl text-ink tracking-tight mb-10">
-          Skills
-        </motion.h2>
-        <div className="space-y-10">
-          {skillGroups.map((group) => (
-            <motion.div key={group.label} variants={itemVariants}>
-              <h3 className="font-mono text-xs tracking-[0.2em] uppercase text-muted-foreground mb-4">
-                {group.label}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {group.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1.5 text-sm font-mono text-ink/85 bg-cream border border-border rounded-md"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
-
-      {/* Charts */}
-      <motion.section
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
-        variants={containerVariants}
-        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-16 py-20 md:py-28 border-t border-border"
-      >
-        <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl text-ink tracking-tight mb-4">
-          Data snapshot
-        </motion.h2>
-        <motion.p variants={itemVariants} className="text-muted-foreground mb-10 max-w-2xl">
-          How the work actually splits — tools, domains, and delivery over time.
-        </motion.p>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-          <motion.div variants={itemVariants} className="code-chrome p-5 sm:p-7">
-            <h3 className="font-mono text-sm text-muted-foreground mb-2">core_stack.depth</h3>
-            <p className="text-xs text-muted-foreground/80 mb-5">Self-rated proficiency across the daily stack.</p>
-            <BarChart />
-          </motion.div>
-          <motion.div variants={itemVariants} className="code-chrome p-5 sm:p-7">
-            <h3 className="font-mono text-sm text-muted-foreground mb-2">time.distribution</h3>
-            <p className="text-xs text-muted-foreground/80 mb-5">Where attention goes across practice areas.</p>
-            <PieChart />
-          </motion.div>
-          <motion.div variants={itemVariants} className="code-chrome p-5 sm:p-7">
-            <h3 className="font-mono text-sm text-muted-foreground mb-2">tool_mix.share</h3>
-            <p className="text-xs text-muted-foreground/80 mb-5">Share of build time by tool.</p>
-            <ToolMixChart />
-          </motion.div>
-          <motion.div variants={itemVariants} className="code-chrome p-5 sm:p-7">
-            <h3 className="font-mono text-sm text-muted-foreground mb-2">delivery.trend</h3>
-            <p className="text-xs text-muted-foreground/80 mb-5">Cumulative dashboards and report hubs shipped.</p>
-            <DeliveryTrendChart />
-          </motion.div>
-          <motion.div variants={itemVariants} className="code-chrome p-5 sm:p-7">
-            <h3 className="font-mono text-sm text-muted-foreground mb-2">domain.share</h3>
-            <p className="text-xs text-muted-foreground/80 mb-5">Recent work mix by business domain.</p>
-            <DomainBarChart />
-          </motion.div>
-          <motion.div variants={itemVariants} className="code-chrome p-5 sm:p-7">
-            <h3 className="font-mono text-sm text-muted-foreground mb-2">analyst.radar</h3>
-            <p className="text-xs text-muted-foreground/80 mb-5">Capability profile across analysis and product craft.</p>
-            <SkillRadarChart />
-          </motion.div>
-        </div>
-      </motion.section>
-    </div>
+      </div>
+    </section>
   )
 }
