@@ -6,8 +6,9 @@ import {
   GyanxDashboardMock,
   AiCallingMock,
 } from '@/components/GuiReportMocks'
+import PactMock from '@/components/PactMock'
 
-/** Fictional placeholder UIs — no real schemas, figures, or internal outlines.
+/** Fictional placeholder UIs - no real schemas, figures, or internal outlines.
  *  Stages accumulate: glass → grid → model → BI → ask → hub → org stream.
  *  GUI / GyanX stages use synthetic product previews (not production numbers).
  */
@@ -255,13 +256,16 @@ export default function MockProduct({ variant = 'looker' }) {
     case 'ai-calling':
       return <AiCallingMock />
 
+    case 'pact':
+      return <PactMock />
+
     case 'now':
       return (
         <div className="space-y-2">
           <SignalSpine step={6} />
           <ReportHubMock />
           <p className="font-mono text-[9px] text-white/30 px-1">
-            Org data · pipelines · internal tools — synthetic hub preview
+            Org data · pipelines · internal tools - synthetic hub preview
           </p>
         </div>
       )

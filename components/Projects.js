@@ -23,7 +23,7 @@ export default function Projects() {
             Things I&apos;ve made that prove the story
           </h2>
           <p className="mt-4 text-muted-foreground leading-relaxed">
-            Not a CV dump — chapters where craft met a real question.
+            Not a CV dump - chapters where craft met a real question.
           </p>
         </motion.div>
 
@@ -102,7 +102,7 @@ export default function Projects() {
         <div id="path" className="mb-16">
           <p className="section-eyebrow mb-4">the path</p>
           <h3 className="font-display text-2xl sm:text-3xl text-ink tracking-tight mb-8">
-            Roles as chapters — not a LinkedIn mirror
+            Roles as chapters - not a LinkedIn mirror
           </h3>
           <div className="space-y-0 border-t border-border">
             {experience.map((company) =>

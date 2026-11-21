@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { builds, profile } from '@/lib/content'
 import { GyanxDashboardMock, AiCallingMock } from '@/components/GuiReportMocks'
+import PactMock from '@/components/PactMock'
 
 export default function Building() {
   return (
@@ -29,7 +30,7 @@ export default function Building() {
           Building in public
         </h2>
         <p className="text-white/50 max-w-lg mb-14 leading-relaxed text-base sm:text-lg">
-          Side labs and live products — the same muscle as the day job, without the NDA.
+          Side labs and live products - the same muscle as the day job, without the NDA.
         </p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
@@ -66,10 +67,25 @@ export default function Building() {
         <div className="mb-6">
           <p className="section-eyebrow text-signal/80 mb-2">product preview</p>
           <h3 className="font-display text-2xl sm:text-4xl text-white tracking-tight max-w-xl leading-tight">
+            Pact - partner ops reports
+          </h3>
+          <p className="mt-3 text-sm sm:text-base text-white/45 max-w-xl leading-relaxed">
+            Internal tool layout recreation. Figures are invented for the portfolio - not production
+            data, and there is no public link.
+          </p>
+        </div>
+
+        <div className="mb-14 rounded-2xl ring-1 ring-white/10 overflow-hidden">
+          <PactMock />
+        </div>
+
+        <div className="mb-6">
+          <p className="section-eyebrow text-signal/80 mb-2">product preview</p>
+          <h3 className="font-display text-2xl sm:text-4xl text-white tracking-tight max-w-xl leading-tight">
             GyanX surfaces I shipped
           </h3>
           <p className="mt-3 text-sm sm:text-base text-white/45 max-w-xl leading-relaxed">
-            Layout recreations with invented figures — a look at the analytics and AI-calling UIs,
+            Layout recreations with invented figures - a look at the analytics and AI-calling UIs,
             not live production data.
           </p>
         </div>

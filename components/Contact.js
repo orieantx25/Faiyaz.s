@@ -32,7 +32,7 @@ export default function Contact() {
             Let&apos;s build the next signal
           </h2>
           <p className="mt-4 text-muted-foreground leading-relaxed">
-            I&apos;m posting more of the journey on LinkedIn — ops learnings, builds, and what ships next.
+            I&apos;m posting more of the journey on LinkedIn - ops learnings, builds, and what ships next.
           </p>
         </motion.div>
 

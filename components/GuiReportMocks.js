@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-/** Product-preview mocks. All figures are invented for layout — not production data. */
+/** Product-preview mocks. All figures are invented for layout - not production data. */
 
 const ACCENT = '#e03e3e'
 const ease = [0.16, 1, 0.3, 1]
@@ -29,7 +29,7 @@ const HUB_MODULES = [
   },
   {
     title: 'Refund Cases',
-    blurb: 'Retained vs processed vs refunded — ops distribution.',
+    blurb: 'Retained vs processed vs refunded - ops distribution.',
     icon: '↩',
   },
   {
@@ -45,12 +45,12 @@ const HUB_MODULES = [
 ]
 
 const CAROUSEL_LINES = [
-  'Partner Pipeline — funnel, blocks, and executive KPIs',
-  'Campus Admissions — bifurcation and refund views',
-  'Refund Cases — retained vs processed split',
-  'Admission Journey — block-paid student backtrack',
-  'Loan Desk — vendor track and risk queues',
-  'Ops Pulse — scheduled report hub runs',
+  'Partner Pipeline - funnel, blocks, and executive KPIs',
+  'Campus Admissions - bifurcation and refund views',
+  'Refund Cases - retained vs processed split',
+  'Admission Journey - block-paid student backtrack',
+  'Loan Desk - vendor track and risk queues',
+  'Ops Pulse - scheduled report hub runs',
 ]
 
 /** Reports-inside style carousel with floating chart glyphs */

@@ -157,7 +157,7 @@ def header_row(left, right, s):
 
 
 def education_row(school, dates, detail, s):
-    """School + dates on one row, degree under school — shared column edges."""
+    """School + dates on one row, degree under school - shared column edges."""
     table = Table(
         [
             [Paragraph(school, s["role"]), Paragraph(dates, s["right"])],
@@ -271,7 +271,7 @@ def build():
 
     upgrad = [
         header_row("upGrad School of Technology", "Bengaluru", s),
-        Paragraph("Operation &amp; Business Analyst &nbsp;&nbsp; Mar 2026 – Present", s["meta"]),
+        Paragraph("Data Analyst - Business Operations &nbsp;&nbsp; Mar 2026 – Present", s["meta"]),
         *bullets(
             [
                 "Analyze operational and business data to uncover trends and support strategic decisions.",
@@ -282,7 +282,7 @@ def build():
             s,
         ),
         Spacer(1, 3),
-        Paragraph("Growth &amp; Strategy Analyst &nbsp;&nbsp; Oct 2025 – Apr 2026", s["meta"]),
+        Paragraph("Data Analyst - Growth & Strategy &nbsp;&nbsp; Oct 2025 – Apr 2026", s["meta"]),
         *bullets(
             [
                 "Supported growth initiatives through acquisition, retention, and revenue tracking.",
@@ -361,8 +361,8 @@ def build():
             "DBRIEF (Debrief F1)",
             "Built an F1 analytics product so fans and analysts could read race week without digging through "
             "scattered standings and session noise. Combined race data, historical context, prediction views, "
-            "and a dashboard UI into one briefing surface — live at "
-            '<link href="https://www.debrieff1.in/">debrieff1.in</link> — so session signal stays in one place '
+            "and a dashboard UI into one briefing surface - live at "
+            '<link href="https://www.debrieff1.in/">debrieff1.in</link> - so session signal stays in one place '
             "instead of across tabs and feeds.",
         ),
         (
@@ -370,7 +370,7 @@ def build():
             "Stakeholders at upGrad School of Technology needed operational answers without waiting on ad-hoc "
             "spreadsheets. Built Looker dashboards for KPIs and delivery outcomes, then a Python report hub with "
             "SQL-backed validation and a full UI so teams could open structured reports themselves. The result was "
-            "a shared internal surface for program performance and data delivery — not a one-off slide deck.",
+            "a shared internal surface for program performance and data delivery - not a one-off slide deck.",
         ),
         (
             "Growth Analytics Dashboard",
@@ -387,8 +387,8 @@ def build():
             "less time on repetitive entry checks and the site gained a repeatable vision-based process.",
         ),
         (
-            "Assamese–English Translator",
-            "Wanted usable bilingual translation for Assamese–English evaluation loops, not a demo that only "
+            "Assamese-English Translator",
+            "Wanted usable bilingual translation for Assamese-English evaluation loops, not a demo that only "
             "worked on clean textbook lines. Trained a transformer seq2seq model in TensorFlow and Python with "
             "careful preprocessing and tokenization on a curated sentence corpus, then iterated on data quality "
             "before chasing architecture tweaks. Produced a working bilingual model that could be scored and "

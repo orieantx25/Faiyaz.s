@@ -18,9 +18,11 @@ module.exports = {
     	},
     	extend: {
     		fontFamily: {
-    			display: ['Syne', 'system-ui', 'sans-serif'],
-    			sans: ['Outfit', 'system-ui', 'sans-serif'],
-    			mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+    			display: ['var(--font-bebas)', 'Impact', 'sans-serif'],
+    			heading: ['var(--font-space)', 'system-ui', 'sans-serif'],
+    			sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+    			mono: ['var(--font-plex)', 'ui-monospace', 'monospace'],
+    			data: ['var(--font-plex)', 'ui-monospace', 'monospace'],
     		},
     		colors: {
     			sage: 'hsl(var(--sage))',

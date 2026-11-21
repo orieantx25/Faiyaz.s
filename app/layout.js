@@ -1,4 +1,31 @@
 import './globals.css'
+import { Bebas_Neue, Space_Grotesk, Inter, IBM_Plex_Mono } from 'next/font/google'
+
+const bebas = Bebas_Neue({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-bebas',
+  display: 'swap',
+})
+
+const space = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
+
+const plex = IBM_Plex_Mono({
+  weight: ['400', '500', '600'],
+  subsets: ['latin'],
+  variable: '--font-plex',
+  display: 'swap',
+})
 
 export const metadata = {
   metadataBase: new URL('https://faiyazsabab.com'),
@@ -24,11 +51,11 @@ export const metadata = {
     url: 'https://faiyazsabab.com',
     title: 'Faiyaz Sabab | Data Analyst',
     description:
-      'Insights that drive decisions — dashboards, report hubs, and analytical storytelling.',
+      'Insights that drive decisions - dashboards, report hubs, and analytical storytelling.',
     siteName: 'Faiyaz Sabab',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/icon.png',
         width: 1200,
         height: 630,
         alt: 'Faiyaz Sabab - Data Analyst',
@@ -39,7 +66,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Faiyaz Sabab | Data Analyst',
     description: 'Looker, Python report hubs, and data storytelling.',
-    images: ['/og-image.jpg'],
+    images: ['/icon.png'],
   },
   robots: {
     index: true,
@@ -47,7 +74,7 @@ export const metadata = {
   },
   appleWebApp: {
     title: 'Faiyaz Sabab',
-    statusBarStyle: 'default',
+    statusBarStyle: 'black-translucent',
     capable: true,
   },
   icons: {
@@ -90,7 +117,10 @@ export default function RootLayout({ children }) {
   }
 
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${bebas.variable} ${space.variable} ${inter.variable} ${plex.variable}`}
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -101,7 +131,7 @@ export default function RootLayout({ children }) {
         <script
           dangerouslySetInnerHTML={{
             __html:
-              'try{if("scrollRestoration"in history)history.scrollRestoration="manual";window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;}catch(e){}',
+              'try{if("scrollRestoration"in history)history.scrollRestoration="manual";window.scrollTo(0,0);}catch(e){}',
           }}
         />
         <script
@@ -109,9 +139,9 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <link rel="canonical" href="https://faiyazsabab.com" />
-        <meta name="theme-color" content="#0B1218" />
+        <meta name="theme-color" content="#090909" />
       </head>
-      <body className="antialiased font-sans">{children}</body>
+      <body className="antialiased font-sans bg-[#090909] text-white">{children}</body>
     </html>
   )
 }
